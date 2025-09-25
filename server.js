@@ -679,9 +679,17 @@ app.post("/send-license", async (req, res) => {
     }
 
     const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-    });
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // Use TLS
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+  connectionTimeout: 30000, // 30 seconds
+  socketTimeout: 30000,     // 30 seconds
+  greetingTimeout: 30000,   // 30 seconds
+});
 
     const mailOptions = {
       from: `"V-Nashak Security" <${process.env.EMAIL_USER}>`,
@@ -859,4 +867,5 @@ app.listen(PORT, () => {
   console.log(`   POST /send-license - Validate User ID and send license`);
   console.log(`   POST /activate-license - Activate license key`);
   console.log(`   POST /test-userid - Test User ID validation`);
+
 });
